@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Scriptorium – Book Video Library</title>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --parch:#ecd9a8; --parch2:#e0c68a; --ink:#2b1b0e; --blood:#7a1f1f;
+  --gold:#b8892b; --goldl:#e6c068; --navy:#1d2a44; --moss:#3f5a2e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'IM Fell English',Georgia,serif;font-size:1.1rem;color:var(--ink);line-height:1.55;
+  background:
+    radial-gradient(ellipse at 20% 10%,rgba(255,255,255,.35),transparent 50%),
+    radial-gradient(ellipse at 90% 90%,rgba(122,31,31,.18),transparent 55%),
+    var(--parch);
+  min-height:100vh;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+:focus-visible{outline:3px solid var(--blood);outline-offset:2px}
+h1,h2,h3,.cin{font-family:'Cinzel',serif}
+
+/* masthead */
+header{background:var(--navy);color:var(--goldl);text-align:center;padding:34px 5% 26px;border-bottom:6px double var(--gold)}
+header h1{font-family:'UnifrakturCook','Old English Text MT',serif;font-size:clamp(2.6rem,8vw,5rem);font-weight:700;letter-spacing:.02em;text-shadow:2px 2px 0 #000}
+header p{font-style:italic;color:#e9dcc0;max-width:560px;margin:6px auto 18px}
+.crest{font-size:2.2rem}
+.hbtns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* buttons */
+.btn{font-family:'Cinzel',serif;font-weight:700;padding:11px 22px;border-radius:4px;letter-spacing:.04em;border:2px solid var(--gold);transition:transform .15s}
+.btn:active{transform:translateY(1px)}
+.seal{background:var(--blood);color:var(--goldl)}
+.gold{background:var(--goldl);color:var(--ink)}
+.ghost{background:transparent;color:var(--blood);border-color:var(--blood)}
+
+main{max-width:1100px;margin:0 auto;padding:30px 5% 60px}
+
+/* tools */
+.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:22px;padding:14px;border:2px solid var(--gold);background:rgba(255,248,225,.5);outline:1px solid var(--gold);outline-offset:3px}
+.tools input,.tools select{padding:9px 12px;border:2px solid var(--gold);background:#fbf1d3;color:var(--ink);border-radius:3px}
+.tools input{flex:1;min-width:200px}
+.count{margin-left:auto;font-style:italic}
+
+/* cards */
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:26px}
+.scroll{background:#f6e8bf;border:2px solid var(--ink);border-top:10px solid var(--c);padding:18px 18px 16px;position:relative;box-shadow:5px 5px 0 rgba(43,27,14,.35);display:flex;flex-direction:column;gap:6px}
+.scroll .tag{font-family:'Cinzel',serif;font-size:.8rem;color:#fff;background:var(--c);padding:2px 10px;align-self:flex-start;border-radius:2px}
+.scroll h3{font-size:1.25rem;line-height:1.25;margin-top:4px}
+.scroll h3::first-letter{font-family:'UnifrakturCook',serif;font-size:1.9rem;color:var(--blood)}
+.author{font-style:italic;color:#5a4630}
+.desc{font-size:1rem;flex:1}
+.by{font-size:.9rem;color:#6b563d}
+.acts{display:flex;gap:8px;margin-top:8px}
+.acts .btn{padding:8px 14px;font-size:.85rem}
+.empty{grid-column:1/-1;text-align:center;padding:50px 10px;font-style:italic;font-size:1.2rem}
+
+/* modals */
+.modal{position:fixed;inset:0;background:rgba(20,12,4,.78);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal.open{display:flex}
+.box{background:var(--parch);border:4px double var(--gold);padding:26px;width:min(560px,100%);max-height:94vh;overflow:auto;position:relative}
+.box.wide{width:min(820px,100%)}
+.box h2{color:var(--blood);font-size:1.5rem;margin-bottom:14px}
+.x{position:absolute;top:10px;right:12px;background:var(--blood);color:var(--goldl);width:34px;height:34px;border-radius:50%;font-weight:700}
+label{display:block;font-family:'Cinzel',serif;font-size:.85rem;font-weight:700;margin-bottom:12px}
+label input,label select,label textarea{display:block;width:100%;margin-top:4px;padding:9px 11px;border:2px solid var(--gold);background:#fbf1d3;color:var(--ink);border-radius:3px;font-family:'IM Fell English',serif;font-size:1.05rem;font-weight:400}
+.frame{position:relative;padding-top:56.25%;background:#000;border:3px solid var(--gold)}
+.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.hint{font-size:.9rem;font-style:italic;color:#6b563d;margin:-6px 0 12px}
+
+footer{background:var(--navy);color:#e9dcc0;text-align:center;padding:22px 5%;border-top:6px double var(--gold);font-style:italic}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="crest">⚜</div>
+  <h1>The Scriptorium</h1>
+  <p>A great hall of videos about books. Add a scroll for others to find, and watch what others have shared.</p>
+  <div class="hbtns">
+    <button class="btn gold" id="addOpen">Add a video scroll</button>
+  </div>
+</header>
+
+<main>
+  <div class="tools">
+    <input id="q" type="search" placeholder="Search by title, book or author" aria-label="Search">
+    <select id="cat" aria-label="Filter by shelf"></select>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="shelf" id="shelf"></div>
+</main>
+
+<footer>⚜ The Scriptorium · Videos belong to their makers. Share only what you may share. ⚜</footer>
+
+<!-- add -->
+<div class="modal" id="addModal"><div class="box">
+  <button class="x" data-close aria-label="Close">✕</button>
+  <h2>Add a video scroll</h2>
+  <label>Video title<input id="fTitle" placeholder="e.g. The Hobbit explained"></label>
+  <label>Book name<input id="fBook" placeholder="e.g. The Hobbit"></label>
+  <label>Author of the book<input id="fAuthor" placeholder="e.g. J. R. R. Tolkien"></label>
+  <label>Shelf<select id="fCat"></select></label>
+  <label>YouTube link (optional)<input id="fUrl" placeholder="https://www.youtube.com/watch?v=..."></label>
+  <p class="hint">Without a link, viewers get a button to search for the video.</p>
+  <label>Short description<textarea id="fDesc" rows="3" placeholder="What will viewers learn?"></textarea></label>
+  <label>Your name<input id="fBy" placeholder="e.g. Brother Anand"></label>
+  <button class="btn seal" id="saveBtn">Add to the library</button>
+</div></div>
+
+<!-- watch -->
+<div class="modal" id="watchModal"><div class="box wide">
+  <button class="x" data-close aria-label="Close">✕</button>
+  <h2 id="wTitle"></h2>
+  <div class="frame" id="wFrame"></div>
+</div></div>
+
+<script>
+const CATS={
+  'Chronicles & History':'#7a1f1f','Romance & Legends':'#6b2d8b','Philosophy':'#1d2a44',
+  'Poetry':'#b8892b','Science & Nature':'#3f5a2e','Other tales':'#5a2e1a'
+};
+const SEED=[
+ {id:1,title:'Why The Divine Comedy still matters',book:'The Divine Comedy',author:'Dante Alighieri',cat:'Poetry',url:'',desc:'A guided walk through Hell, Purgatory and Paradise.',by:'The Scriptorium'},
+ {id:2,title:'King Arthur: history or legend?',book:'Le Morte d\'Arthur',author:'Thomas Malory',cat:'Romance & Legends',url:'',desc:'Knights, quests and the Round Table explained.',by:'The Scriptorium'},
+ {id:3,title:'Ideas of The Republic in ten minutes',book:'The Republic',author:'Plato',cat:'Philosophy',url:'',desc:'Justice, the cave and the ideal city.',by:'The Scriptorium'}
+];
+let lib=load();
+function load(){try{const v=JSON.parse(localStorage.getItem('scriptorium_v1'));return Array.isArray(v)?v:SEED}catch(e){return SEED}}
+function save(){try{localStorage.setItem('scriptorium_v1',JSON.stringify(lib))}catch(e){}}
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// selects
+$('cat').innerHTML='<option value="">All shelves</option>'+Object.keys(CATS).map(c=>`<option>${c}</option>`).join('');
+$('fCat').innerHTML=Object.keys(CATS).map(c=>`<option>${c}</option>`).join('');
+
+function ytId(u){
+  const m=String(u).match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/);
+  return m?m[1]:null;
+}
+
+function render(){
+  const q=$('q').value.toLowerCase().trim(),c=$('cat').value;
+  const list=lib.filter(v=>(!c||v.cat===c)&&(!q||(v.title+v.book+v.author).toLowerCase().includes(q)));
+  $('count').textContent=list.length+(list.length===1?' scroll':' scrolls');
+  if(!list.length){$('shelf').innerHTML='<div class="empty">No scrolls found on this shelf. Add the first one!</div>';return}
+  $('shelf').innerHTML=list.map(v=>`
+    <article class="scroll" style="--c:${CATS[v.cat]||'#5a2e1a'}">
+      <span class="tag">${esc(v.cat)}</span>
+      <h3>${esc(v.title)}</h3>
+      <div class="author">${esc(v.book)} · ${esc(v.author)}</div>
+      <p class="desc">${esc(v.desc)}</p>
+      <div class="by">Added by ${esc(v.by)}</div>
+      <div class="acts">
+        <button class="btn seal" data-watch="${v.id}">${ytId(v.url)?'Watch':'Find video'}</button>
+        <button class="btn ghost" data-del="${v.id}">Remove</button>
+      </div>
+    </article>`).join('');
+}
+
+$('q').oninput=$('cat').onchange=render;
+
+$('shelf').addEventListener('click',e=>{
+  const w=e.target.closest('[data-watch]'),d=e.target.closest('[data-del]');
+  if(w){
+    const v=lib.find(x=>x.id==w.dataset.watch),id=ytId(v.url);
+    if(id){
+      $('wTitle').textContent=v.title;
+      $('wFrame').innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${id}" title="${esc(v.title)}" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+      $('watchModal').classList.add('open');
+    }else{
+      window.open('https://www.youtube.com/results?search_query='+encodeURIComponent(v.book+' '+v.author+' book summary'),'_blank','noopener');
+    }
+  }
+  if(d){
+    const v=lib.find(x=>x.id==d.dataset.del);
+    if(confirm('Remove "'+v.title+'" from the library?')){lib=lib.filter(x=>x.id!=v.id);save();render()}
+  }
+});
+
+// modals
+function closeAll(){
+  document.querySelectorAll('.modal').forEach(m=>m.classList.remove('open'));
+  $('wFrame').innerHTML=''; // stops the video
+}
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeAll);
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeAll()}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
+$('addOpen').onclick=()=>$('addModal').classList.add('open');
+
+$('saveBtn').onclick=()=>{
+  const t=$('fTitle').value.trim(),b=$('fBook').value.trim(),a=$('fAuthor').value.trim(),u=$('fUrl').value.trim();
+  if(!t||!b||!a){alert('Please fill in the video title, book name and author.');return}
+  if(u&&!ytId(u)){alert('That does not look like a YouTube link. Paste a link like https://www.youtube.com/watch?v=... or leave it empty.');return}
+  lib.unshift({id:Date.now(),title:t,book:b,author:a,cat:$('fCat').value,url:u,
+    desc:$('fDesc').value.trim()||'A video about this book.',by:$('fBy').value.trim()||'A kind traveller'});
+  save();render();
+  ['fTitle','fBook','fAuthor','fUrl','fDesc','fBy'].forEach(i=>$(i).value='');
+  closeAll();
+};
+render();
+</script>
+</body>
+</html>
